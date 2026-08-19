@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLider Pro - Barcha Kurslar</title>
+    <!-- AOS animatsiya kutubxonasi -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root { 
+            --accent: #6366f1; 
+            --dark: #0f172a;
+            --telegram: #0088cc;
+            --instagram: #e1306c;
+            --phone: #28a745;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; overflow-x: hidden; }
+
+        /* Glassmorphism uslubi */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
+        h1 { font-size: 3.5rem; margin-bottom: 10px; background: linear-gradient(to right, #6366f1, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .btn { padding: 15px 30px; background: var(--accent); color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 1rem; font-weight: 600; text-decoration: none; transition: 0.3s; display: inline-block; text-align: center; }
+        .btn:hover { transform: scale(1.05); opacity: 0.9; }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: white; }
+        .btn-outline:hover { background: var(--accent); }
+
+        /* Asosiy konteyner */
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        .section-title { font-size: 1.8rem; margin: 60px 0 30px; text-align: center; color: #fff; }
+        
+        /* Qidiruv va Filtr qismi */
+        .search-box { width: 100%; padding: 14px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; font-size: 1rem; outline: none; margin-bottom: 20px; box-sizing: border-box; transition: 0.3s; }
+        .search-box:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); }
+
+        .filter-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .filter-btn { padding: 8px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+        .filter-btn.active, .filter-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+        /* Afzalliklar (Nega aynan biz?) */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 20px; border-radius: 16px; text-align: center; transition: 0.3s; }
+        .feature-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.06); }
+        .feature-card span { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+        .feature-card h4 { margin: 0 0 8px; color: #fff; font-size: 1.1rem; }
+        .feature-card p { margin: 0; font-size: 0.85rem; opacity: 0.7; }
+
+        /* Kurslar dizayni */
+        .course-item { 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 20px; border-radius: 14px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center; transition: 0.3s;
+        }
+        .course-item:hover { background: rgba(255,255,255,0.1); transform: scale(1.01); }
+        .course-info h4 { margin: 0; color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .course-info p { margin: 4px 0 0; font-size: 0.9rem; opacity: 0.7; }
+        .course-price { font-weight: bold; color: #4ade80; }
+        
+        .badge { background: #ef4444; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 6px; font-weight: bold; }
+        .btn-small { padding: 8px 16px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: 0.3s; }
+        .btn-small:hover { opacity: 0.9; }
+
+        /* Sharhlar */
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .review-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .review-card p { font-style: italic; opacity: 0.8; font-size: 0.95rem; }
+        .review-card h5 { margin: 15px 0 0; color: var(--accent); font-size: 1rem; }
+
+        /* FAQ */
+        .faq-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+        .faq-question { width: 100%; text-align: left; padding: 15px 20px; background: transparent; color: white; border: none; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; outline: none; }
+        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; opacity: 0.8; font-size: 0.9rem; }
+        .faq-item.active .faq-answer { padding: 0 20px 15px; max-height: 200px; }
+
+        /* Modal oyna */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        
+        .input-box { width: 100%; margin-bottom: 15px; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; outline: none; box-sizing: border-box; }
+        .input-box:focus { border-color: var(--accent); }
+
+        .success-box { display: none; background: #10b981; color: white; padding: 15px; border-radius: 12px; text-align: center; font-size: 0.95rem; font-weight: 600; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); margin-top: 15px; }
+
+        /* Suzuvchi Telegram tugmasi */
+        .floating-telegram { position: fixed; bottom: 30px; right: 30px; background: var(--telegram); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; box-shadow: 0 10px 25px rgba(0, 136, 204, 0.5); z-index: 99; text-decoration: none; transition: 0.3s; }
+        .floating-telegram:hover { transform: scale(1.1); }
+
+        /* Footer va Xarita */
+        .footer-container { max-width: 600px; margin: auto; }
+        .map-box { width: 100%; height: 200px; border-radius: 15px; border: none; margin-top: 20px; }
+        .contact-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
+        
+        @media (max-width: 600px) { h1 { font-size: 2rem; } .header-btns { flex-direction: column; width: 100%; gap: 10px; } }
+    </style>
+</head>
+<body>
+
+    <!-- Suzuvchi Telegram tugmasi -->
+    <a href="https://t.me/Muslimjon890" target="_blank" class="floating-telegram">💬</a>
+
+    <header>
+        <h1 data-aos="fade-down">EduLider Pro</h1>
+        <p data-aos="fade-up" data-aos-delay="200" style="font-size: 1.2rem; margin-bottom: 25px;">Uchko'prikdagi eng ilg'or o'quv markazi.</p>
+        
+        <div class="header-btns" style="display: flex; gap: 15px; justify-content: center;" data-aos="fade-up" data-aos-delay="400">
+            <button class="btn" onclick="toggleModal()">Ro'yxatdan o'tish</button>
+            <button class="btn btn-outline" onclick="selectCourse('Bepul sinov darsi (Sinov)')">🎁 Bepul sinov darsi</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Afzalliklar Bloki (Yangi) -->
+        <h2 class="section-title" data-aos="fade-up">💡 Nega aynan EduLider?</h2>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up">
+                <span>👨‍🏫</span>
+                <h4>Tajribali ustozlar</h4>
+                <p>O'z ishining mutaxassislari bo'lgan kuchli jamoa.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <span>💻</span>
+                <h4>Zamonaviy sharoit</h4>
+                <p>So'nggi texnologiyalar bilan jihozlangan sinfxonalar.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <span>📜</span>
+                <h4>Rasmiy Sertifikat</h4>
+                <p>Kursni bitirganlarga maxsus diplom va sertifikatlar.</p>
+            </div>
+        </div>
+
+        <!-- Kurslar Bo'limi -->
+        <h2 class="section-title" data-aos="fade-up">📚 Bizning barcha kurslarimiz</h2>
+        
+        <!-- Jonli Qidiruv satri (Yangi) -->
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 Fan nomini yozib qidiring (masalan: Python, Matematika)..." onkeyup="filterCourses()" data-aos="fade-up">
+
+        <!-- Filtr tugmalari -->
+        <div class="filter-container" data-aos="fade-up">
+            <button class="filter-btn active" onclick="setCategory('all', this)">Barchasi</button>
+            <button class="filter-btn" onclick="setCategory('it', this)">💻 IT va Texnologiya</button>
+            <button class="filter-btn" onclick="setCategory('school', this)">📖 Umumta'lim</button>
+        </div>
+
+        <div id="courseList"></div>
+
+        <!-- Sharhlar Bo'limi -->
+        <h2 class="section-title" data-aos="fade-up">🌟 O'quvchilarimiz natijalari</h2>
+        <div class="reviews-grid">
+            <div class="review-card" data-aos="fade-up">
+                <p>"Python kursini o'qib, o'zimning birinchi Telegram botimni yaratdim. O'qituvchilar juda tajribali."</p>
+                <h5>- Sardor M., Dasturlash kursi</h5>
+            </div>
+            <div class="review-card" data-aos="fade-up" data-aos-delay="100">
+                <p>"Matematikadan tayyorlanib, litseyga davlat granti asosida o'qishga kirdim. EduLiderga rahmat!"</p>
+                <h5>- Madina A., Matematika</h5>
+            </div>
+        </div>
+
+        <!-- FAQ Bo'limi -->
+        <h2 class="section-title" data-aos="fade-up">❓ Ko'p beriladigan savollar</h2>
+        <div class="faq-container">
+            <div class="faq-item" data-aos="fade-up">
+                <button class="faq-question" onclick="toggleFAQ(this)">Darslar haftada necha marta bo'ladi? <span>▼</span></button>
+                <div class="faq-answer"><p>Darslarimiz kurs yo'nalishiga qarab haftada 3 kun, 1.5 soatdan yoki intensiv tarzda haftada 5 kun bo'lib o'tadi.</p></div>
+            </div>
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="50">
+                <button class="faq-question" onclick="toggleFAQ(this)">Birinchi dars bepulmi? <span>▼</span></button>
+                <div class="faq-answer"><p>Ha! Siz o'zingizga yoqqan istalgan kursning birinchi darsida bepul qatnashib, o'qitish uslubi bilan tanishib chiqishingiz mumkin.</p></div>
+            </div>
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                <button class="faq-question" onclick="toggleFAQ(this)">Kurs oxirida sertifikat beriladimi? <span>▼</span></button>
+                <div class="faq-answer"><p>Albatta, kursni muvaffaqiyatli yakunlagan va yakuniy imtihonlardan o'tgan o'quvchilarga maxsus sertifikat topshiriladi.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal oyna -->
+    <div class="modal" id="modal">
+        <div class="glass" style="width: 90%; max-width: 400px; text-align: center;">
+            <h3>Ariza qoldirish</h3>
+            <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px;">Ma'lumotlaringizni kiriting, tez orada bog'lanamiz.</p>
+            
+            <input type="text" id="userName" class="input-box" placeholder="Ismingiz">
+            <input type="tel" id="userPhone" class="input-box" placeholder="Telefon raqam (+998...)">
+            <input type="text" id="selectedCourse" class="input-box" placeholder="Tanlangan kurs" readonly style="background: rgba(255,255,255,0.1); cursor: not-allowed;">
+            
+            <button class="btn" id="submitBtn" onclick="submitForm()" style="width: 100%; padding: 12px;">Yuborish</button>
+            <button class="btn" onclick="toggleModal()" style="width: 100%; background: transparent; margin-top: 10px; padding: 10px;">Yopish</button>
+            
+            <div id="successText" class="success-box">
+                🎉 Tabriklayman! Arizangiz muvaffaqiyatli yuborildi. Tez orada siz bilan bog'lanamiz!
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer va Manzil -->
+    <footer style="padding: 40px 20px; text-align: center; margin-top: 50px;">
+        <div class="glass footer-container">
+            <h3>Biz bilan bog'lanish</h3>
+            <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">📍 Manzil: Uchko'prik tumani, Fergana</p>
+            
+            <div class="contact-links">
+                <a href="https://t.me/Muslimjon890" target="_blank" class="btn" style="background: var(--telegram); padding: 10px 20px;">Telegram</a>
+                <a href="https://instagram.com/Mashrapov_770" target="_blank" class="btn" style="background: var(--instagram); padding: 10px 20px;">Instagram</a>
+                <a href="tel:+998943248308" class="btn" style="background: var(--phone); padding: 10px 20px;">📞 Qo'ng'iroq</a>
+            </div>
+
+            <!-- Xarita -->
+            <iframe class="map-box" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24560.8358!2d71.05!3d40.48!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb83!2zVXpiZWtpc3RhbiwgVWNoa3Vwcmlr!5e0!3m2!1suz!2s!4v1600000000000" allowfullscreen="" loading="lazy"></iframe>
+
+            <p style="margin-top: 25px; font-size: 0.8rem; opacity: 0.5;">© 2026 EduLider. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <!-- Scriptlar -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        const courses = [
+            { name: "Python Dasturlash", dur: "6 oy", price: "500,000", type: "it", badge: "Aksiya -10%" },
+            { name: "Frontend Development", dur: "6 oy", price: "600,000", type: "it", badge: "Trend" },
+            { name: "Grafik Dizayn", dur: "5 oy", price: "450,000", type: "it", badge: "" },
+            { name: "Sun'iy Intellekt (AI)", dur: "6 oy", price: "550,000", type: "it", badge: "New" },
+            { name: "Ingliz tili (IELTS)", dur: "9 oy", price: "400,000", type: "school", badge: "" },
+            { name: "Matematika", dur: "12 oy", price: "350,000", type: "school", badge: "Top" },
+            { name: "Ona tili va Adabiyot", dur: "9 oy", price: "300,000", type: "school", badge: "" },
+            { name: "Fizika", dur: "9 oy", price: "350,000", type: "school", badge: "" },
+            { name: "Kimyo", dur: "9 oy", price: "350,000", type: "school", badge: "" },
+            { name: "Biologiya", dur: "9 oy", price: "350,000", type: "school", badge: "" },
+            { name: "Tarix", dur: "9 oy", price: "300,000", type: "school", badge: "" },
+            { name: "Rus tili", dur: "6 oy", price: "300,000", type: "school", badge: "" },
+            { name: "Geografiya", dur: "9 oy", price: "300,000", type: "school", badge: "" },
+            { name: "Mental Arifmetika", dur: "6 oy", price: "250,000", type: "school", badge: "" },
+            { name: "Ibtidoiy Ta'lim", dur: "12 oy", price: "250,000", type: "school", badge: "" }
+        ];
+
+        let currentCategory = 'all';
+
+        function renderCourses(data) {
+            const listContainer = document.getElementById('courseList');
+            listContainer.innerHTML = '';
+            
+            if (data.length === 0) {
+                listContainer.innerHTML = `<p style="text-align:center; opacity:0.6; padding: 20px;">Hech qanday kurs topilmadi.</p>`;
+                return;
+            }
+
+            data.forEach((c) => {
+                let badgeHtml = c.badge ? `<span class="badge">${c.badge}</span>` : '';
+                listContainer.innerHTML += `
+                    <div class="course-item">
+                        <div class="course-info">
+                            <h4>${c.name} ${badgeHtml}</h4>
+                            <p>${c.dur} • <span class="course-price">${c.price} so'm / oy</span></p>
+                        </div>
+                        <button class="btn-small" onclick="selectCourse('${c.name}')">Tanlash</button>
+                    </div>
+                `;
+            });
+        }
+
+        // Qidiruv va Filtrni birgalikda boshqarish
+        function filterCourses() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            
+            const filtered = courses.filter(c => {
+                const matchesCategory = currentCategory === 'all' || c.type === currentCategory;
+                const matchesSearch = c.name.toLowerCase().includes(searchText);
+                return matchesCategory && matchesSearch;
+            });
+
+            renderCourses(filtered);
+        }
+
+        function setCategory(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentCategory = type;
+            filterCourses();
+        }
+
+        // Dastlabki yuklash
+        renderCourses(courses);
+
+        // Modal oyna logikasi
+        function toggleModal() {
+            document.getElementById('modal').classList.toggle('active');
+        }
+
+        function selectCourse(courseName) {
+            document.getElementById('selectedCourse').value = courseName;
+            toggleModal();
+        }
+
+        // FAQ logikasi
+        function toggleFAQ(btn) {
+            const item = btn.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // Telegram Bot orqali yuborish
+        function submitForm() {
+            const name = document.getElementById('userName').value.trim();
+            const phone = document.getElementById('userPhone').value.trim();
+            const course = document.getElementById('selectedCourse').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const successText = document.getElementById('successText');
+
+            if (!name || !phone || !course) {
+                alert("Iltimos, barcha maydonlarni to'ldiring va kursni tanlang!");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Yuborilmoqda...";
+
+            const token = "8987290843:AAEIzxXOOrwJ-Ow-rfBApPhW6rGebci9EEI";
+            const chatId = "8807783366";
+            
+            const message = `🔔 Yangi ariza (EduLider Pro)!\n\n👤 Ism: ${name}\n📞 Tel: ${phone}\n📚 Kurs/So'rov: ${course}`;
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Yuborish";
+
+                    if (response.ok) {
+                        successText.style.display = "block";
+                        document.getElementById('userName').value = '';
+                        document.getElementById('userPhone').value = '';
+                        document.getElementById('selectedCourse').value = '';
+                        
+                        setTimeout(() => {
+                            successText.style.display = "none";
+                            toggleModal();
+                        }, 4000);
+                    } else {
+                        alert("Xatolik yuz berdi. Qaytadan urinib ko'ring.");
+                    }
+                })
+                .catch(error => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Yuborish";
+                    alert("Tarmoqda xatolik yuz berdi!");
+                });
+        }
+    </script>
+</body>
+</html>
